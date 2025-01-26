@@ -1,4 +1,4 @@
-# Aloglia plugin for Medusa V2
+# Algolia plugin for Medusa V2
 
 ## Installation
 
@@ -50,10 +50,11 @@ module.exports = defineConfig({
                 "images",
               ],
             },
-            transformer: (product) => ({
+            // Create your own transformer
+            /*transformer: (product) => ({
               id: product.id,
               // other attributes...
-            }),
+            }),*/
           },
         },
       },
@@ -115,3 +116,7 @@ export const config: SubscriberConfig = {
     event: ProductEvents.PRODUCT_DELETED,
 }
 ```
+
+## Add search to Medusa NextJS starter
+
+You can find instructions on how to add search to a Medusa NextJS starter inside the [nextjs](nextjs) folder.
