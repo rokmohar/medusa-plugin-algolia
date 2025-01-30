@@ -1,6 +1,6 @@
 {
   "name": "@rokmohar/medusa-plugin-algolia",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Algolia plugin for Medusa 2",
   "author": "Rok Mohar",
   "license": "MIT",

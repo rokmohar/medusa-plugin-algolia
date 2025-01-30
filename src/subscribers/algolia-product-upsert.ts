@@ -2,7 +2,10 @@ import { SubscriberArgs, SubscriberConfig } from '@medusajs/framework'
 import { Modules, ProductEvents, SearchUtils } from '@medusajs/utils'
 import { AlgoliaService } from '../modules/algolia'
 
-export default async function productUpsertHandler({ event: { data }, container }: SubscriberArgs<{ id: string }>) {
+export default async function algoliaProductUpsertHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
   const productId = data.id
 
   const productModuleService = container.resolve(Modules.PRODUCT)
