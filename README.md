@@ -14,6 +14,14 @@ Or with **yarn**:
 yarn add @rokmohar/medusa-plugin-algolia
 ```
 
+### Upgrade to v1.0
+
+_This step is required only if you are upgrading from previous version to v1.0._
+
+- The plugin now supports new MedusaJS plugin system.
+- Subscribers are included in the plugin.
+- You don't need custom subscribers anymore, you can remove them.
+
 ## Configuration
 
 Add the plugin to your `medusa-config.ts` file:
@@ -25,8 +33,8 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
 module.exports = defineConfig({
   // ... other config
-  modules: [
-    // ... other modules
+  plugins: [
+    // ... other plugins
     {
       resolve: '@rokmohar/medusa-plugin-algolia',
       options: {
@@ -35,19 +43,19 @@ module.exports = defineConfig({
         settings: {
           products: {
             indexSettings: {
-              searchableAttributes: ["title", "description"],
+              searchableAttributes: ['title', 'description'],
               attributesToRetrieve: [
-                "id",
-                "title",
-                "description",
-                "handle",
-                "thumbnail",
-                "variants",
-                "variant_sku",
-                "options",
-                "collection_title",
-                "collection_handle",
-                "images",
+                'id',
+                'title',
+                'description',
+                'handle',
+                'thumbnail',
+                'variants',
+                'variant_sku',
+                'options',
+                'collection_title',
+                'collection_handle',
+                'images',
               ],
             },
             // Create your own transformer
@@ -71,50 +79,6 @@ Add the environment variables to your `.env` and `.env.template` file:
 # ... others vars
 ALGOLIA_APP_ID=
 ALGOLIA_ADMIN_API_KEY=
-```
-
-## Subscribers
-
-You must add the following subscribers to the `src/subscribers`:
-
-### product-upsert.ts
-
-```js
-import { SubscriberArgs, SubscriberConfig } from '@medusajs/framework'
-import { Modules } from '@medusajs/framework/utils'
-import { ProductEvents, SearchUtils } from '@medusajs/utils'
-
-export default async function productUpsertHandler({ event: { data }, container }: SubscriberArgs<{ id: string }>) {
-  const productId = data.id
-
-  const productModuleService = container.resolve(Modules.PRODUCT)
-  const algoliaSearchService = container.resolve('algolia')
-
-  const product = await productModuleService.retrieveProduct(productId)
-  await algoliaSearchService.addDocuments('products', [product], SearchUtils.indexTypes.PRODUCTS)
-}
-
-export const config: SubscriberConfig = {
-  event: [ProductEvents.PRODUCT_CREATED, ProductEvents.PRODUCT_UPDATED],
-}
-```
-
-### product-delete.ts
-
-```js
-import { SubscriberArgs, SubscriberConfig } from '@medusajs/framework'
-import { ProductEvents } from '@medusajs/utils'
-
-export default async function productDeleteHandler({ event: { data }, container }: SubscriberArgs<{ id: string }>) {
-    const productId = data.id
-
-    const algoliaSearchService = container.resolve('algolia')
-    await algoliaSearchService.deleteDocument('products', productId)
-}
-
-export const config: SubscriberConfig = {
-    event: ProductEvents.PRODUCT_DELETED,
-}
 ```
 
 ## Add search to Medusa NextJS starter
