@@ -5,8 +5,9 @@ These are instructions on how to add search to a [Medusa NextJS starter](https:/
 1. Open the Medusa NextJS starter project, or clone it if you haven't already
 2. Copy [search.patch](search.patch) to the root of the project
 3. Apply the patch with the command `git apply search.patch`
-4. You might need to install packages and add environment variables 
+4. You might need to install packages and add environment variables
 
 Required packages:
-- Algolia: `algoliasearch`
+
+- MeiliSearch: `@meilisearch/instant-meilisearch`
 - React InstantSearch Hooks: `react-instantsearch-hooks-web`

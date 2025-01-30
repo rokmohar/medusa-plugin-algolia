@@ -3,7 +3,7 @@ import { variantKeys } from '@medusajs/utils'
 const prefix = `variant`
 
 export const transformProduct = (product: any) => {
-  let transformedProduct = { ...product } as Record<string, unknown>
+  const transformedProduct = { ...product } as Record<string, unknown>
 
   const initialObj = variantKeys.reduce((obj, key) => {
     obj[`${prefix}_${key}`] = []
