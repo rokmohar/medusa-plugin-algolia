@@ -8,7 +8,12 @@ export default async function algoliaProductsIndexJob(container: MedusaContainer
   const algoliaService: AlgoliaService = container.resolve('algolia')
 
   const products = await productService.listProducts()
-  await algoliaService.addDocuments('products', products, SearchUtils.indexTypes.PRODUCTS)
+
+  const publishedProducts = products.filter((p) => p.status === 'published')
+  const deleteDocumentIds = products.filter((p) => p.status !== 'published').map((p) => p.id)
+
+  await algoliaService.addDocuments('products', publishedProducts, SearchUtils.indexTypes.PRODUCTS)
+  await algoliaService.deleteDocuments('products', deleteDocumentIds)
 }
 
 export const config: CronJobConfig = {

@@ -12,7 +12,14 @@ export default async function algoliaProductUpsertHandler({
   const algoliaService: AlgoliaService = container.resolve('algolia')
 
   const product = await productModuleService.retrieveProduct(productId)
-  await algoliaService.addDocuments('products', [product], SearchUtils.indexTypes.PRODUCTS)
+
+  if (product.status === 'published') {
+    // If status is "published", add or update the document in MeiliSearch
+    await algoliaService.addDocuments('products', [product], SearchUtils.indexTypes.PRODUCTS)
+  } else {
+    // If status is not "published", remove the document from MeiliSearch
+    await algoliaService.deleteDocument('products', productId)
+  }
 }
 
 export const config: SubscriberConfig = {

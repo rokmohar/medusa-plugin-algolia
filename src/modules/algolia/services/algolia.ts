@@ -62,6 +62,10 @@ export class AlgoliaService extends SearchUtils.AbstractSearchService {
     return await this.client_.deleteObject({ indexName, objectID: documentId })
   }
 
+  async deleteDocuments(indexName: string, documentIds: string[]) {
+    return await this.client_.deleteObjects({ indexName, objectIDs: documentIds })
+  }
+
   async deleteAllDocuments(indexName: string) {
     return await this.client_.deleteIndex({ indexName })
   }
